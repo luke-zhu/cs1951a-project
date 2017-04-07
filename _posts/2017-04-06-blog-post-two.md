@@ -8,6 +8,10 @@ For this blog post we tried to do a little bit of prediction analysis on the dat
 
 This was unexpectedly accurate, considering all we did was use a singular variable (genre) as our prediction factor. This gave us a little bit of confidence moving forward with our decision to apply more of a prediction based approach to our project with the popularity of artists. However, we want to keep in mind that there are plenty of prediction based analyses out there already for up and coming artists so if we want to make our project more unique, our prediction section of our analysis might be better spent on something that combines other elements of popularity that other companies or service providers have yet tried.
 
+Below you can see a scatterplot of the relative accuracy for each data point where the perfectly accurate line lies on the x = y or diagonal axis as we compare each predicted value to the actual value:
+
+<img src="/cs1951a-project/unnamed.png" />
+
 Here are downloads of the code and output:
 
 <a href="/cs1951a-project/tester2.py">Code</a>
