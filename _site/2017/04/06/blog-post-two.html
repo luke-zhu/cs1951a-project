@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Blog Post #2</title>
+    <link rel="stylesheet" href="" />
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+  <style type="text/css">
+    #chart {
+        margin-left: 40px;
+        height: 506px;
+    }
+
+    text {
+        font: 10px sans-serif;
+    }
+
+    .dot {
+        stroke: #000;
+    }
+
+    .axis path, .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .label {
+        fill: #777;
+    }
+
+    .year.label {
+        font: 500 196px "Helvetica Neue";
+        fill: #ddd;
+    }
+
+    .year.label.active {
+        fill: #aaa;
+    }
+
+    .overlay {
+        fill: none;
+        pointer-events: all;
+        cursor: ew-resize;
+    }
+  </style>
+</head>
+<body>
+    <h1 id="blog-post-2">Blog Post #2</h1>
+<p>For this blog post we tried to do a little bit of prediction analysis on the data set that we were able to collect from Spotify to try and see just how correlated the genre of a song was to its popularity metric. For this we split the data into two sets, one for training and one for testing. They were sets of the same length and were arbitrarily chosen based on the output of the Spotify queries for songs and was equal amount for each year.With the training set, we made a list of buckets for each genre of music and found the average value for the popularity metric that Spotify uses for each genre. Once we made an average value for each genre we used that information as our prediction labeling for what the popularity might be for each song in the testing data. We then compared the actual probability with our predicted probability based on what category of genre the song fell under. In order to compute accuracy, we did a mean-squared error test and found an accuracy of about 183.64 for our variance, meaning that, for each song that we were compare our data with, we were (183.64)^1/2 off or about 13.5 off of the actual popularity metric that was for the song.</p>
+
+<p>This was unexpectedly accurate, considering all we did was use a singular variable (genre) as our prediction factor. This gave us a little bit of confidence moving forward with our decision to apply more of a prediction based approach to our project with the popularity of artists. However, we want to keep in mind that there are plenty of prediction based analyses out there already for up and coming artists so if we want to make our project more unique, our prediction section of our analysis might be better spent on something that combines other elements of popularity that other companies or service providers have yet tried.</p>
+
+<p>Here are downloads of the code and output:</p>
+
+<p><a href="/cs1951a-project/tester2.py">Code</a>
+<a href="/cs1951a-project/output.csv">Output</a></p>
+
+<p>Below is our visualization from the midterm report.</p>
+
+    <div id="chart"></div>
+<script>
+let margin = {top: 100, right: 20, bottom: 20, left: 200};
+let width = 960 - margin.right;
+let height = 500 - margin.top - margin.bottom;
+
+let xScale = d3.scaleLinear()
+  .domain([0, 100])
+  .range([0, width]);
+let xAxis = d3.axisTop(xScale);
+
+let yScale = d3.scaleBand()
+  .rangeRound([0, height])
+  .padding(.1);
+
+let svg = d3.select('#chart')
+  .append('svg')
+  .attr('width', width + margin.left + margin.right)
+  .attr('height', height + margin.top + margin.bottom)
+  .append('g')
+  .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+d3.json('/cs1951a-project/visualization/genre_counts.json', (genre_counts) => {
+  let data = Object.keys(genre_counts[0])
+    .map(d => [d, genre_counts[0][d]])
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 20);
+
+  yScale.domain(data.map(d => d[0]));
+  let yAxis = d3.axisLeft(yScale);
+
+  svg.append('g')
+    .attr('class', 'x axis')
+    .call(xAxis);
+  svg.append('g')
+    .attr('class', 'y axis')
+    .call(yAxis);
+
+  svg.append('text')
+  .attr('class', 'x label')
+  .attr('text-anchor', 'middle')
+  .attr('x', width / 2)
+  .attr('y', -24)
+  .text('Frequency');
+
+  svg.append('text')
+    .attr('class', 'y label')
+    .attr('text-anchor', 'middle')
+    .attr('x', -height / 2)
+    .attr('y', -100)
+    .attr('transform', 'rotate(-90)')
+    .text('Genre');
+
+  let yearLabel = svg.append('text')
+    .attr('class', 'year label')
+    .attr('text-anchor', 'end')
+    .attr('x', width)
+    .attr('y', height - 24)
+    .text('1959');
+
+  let updateColor = (d, i) => {
+    if (data[i][0].includes('pop')) {
+      return 'red';
+    }
+
+    if (data[i][0].includes('rock')) {
+      return 'blue';
+    }
+
+    if (data[i][0].includes('rap')) {
+      return 'yellow';
+    }
+
+    if (data[i][0].includes('soul')) {
+      return 'green';
+    }
+    return 'gray';
+  };
+
+  let bar = svg.selectAll('rect')
+    .data(data)
+    .enter()
+    .append('g')
+    .attr('class', 'bars')
+    .append('rect')
+    .attr('fill', 'gray')
+    .attr('x', 0)
+    .attr('y', d => yScale(d[0]))
+    .attr('height', yScale.bandwidth())
+    .attr('width', d => xScale(d[1]))
+    .attr('fill', updateColor);
+
+  let box = yearLabel.node().getBBox();
+
+  let overlay = svg.append('rect')
+    .attr('class', 'overlay')
+    .attr('x', box.x)
+    .attr('y', box.y)
+    .attr('width', box.width)
+    .attr('height', box.height);
+
+  let updateBars = (year) => {
+    data = Object.keys(genre_counts[year - 1959])
+      .map(d => [d, genre_counts[year - 1959][d]])
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20);
+
+    yScale.domain(data.map(d => d[0]));
+    svg.select('.y.axis')
+      .call(yAxis);
+
+    bar.attr('y', (d, i) => yScale(data[i][0]))
+      .attr('width', (d, i) => xScale(data[i][1]))
+      .attr('fill', updateColor);
+  }
+  
+  let update = () => {
+    let yearScale = d3.scaleLinear()
+      .domain([box.x, box.x + box.width])
+      .range([1959, 2016]);
+    let year = yearScale(d3.event.clientX - margin.left - 48);
+    yearLabel.text(Math.round(year));
+    updateBars(Math.round(year));
+  }
+  overlay.on('mousemove', update);
+});
+</script>
+</body>
+</html>

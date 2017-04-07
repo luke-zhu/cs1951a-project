@@ -19,7 +19,7 @@ Since we are including a web application with our project, an important feature 
 
 
 
-<h2>Integrating social media with music - Luke</h2>
+<h2>Integrating Social media with Music - Luke</h2>
 I worked on setting up a method to gather social media data. So far I have
 gathered data from Twitter. I plan in the future to look at Reddit comments
 as well.
