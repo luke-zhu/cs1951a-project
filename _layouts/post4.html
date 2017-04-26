@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis--x path {
+  display: none;
+}
+
+</style>
+{{ content }}
+<svg width="960" height="500"></svg>
+<p>
+By analyzing the frequency of occurrences of artist names in post titles, we
+were able to filter down the number of artists that we were to look at. Above is
+a graph of the most frequent artists in r/hiphopheads posts.
+</p>
+
+<p>
+  An early look into the comments shows that certain threads have a positive
+  tone while others are very negative. For example, the post
+  "Kodak Black says Lil Wayne can 'Eat His Ass'" has many expletives while
+  the post "Migos' 'Bad and Boujee,' Featuring Lil Uzi Vert, Tops Hot 100" has
+  a more excited and positive tone. We believe that further sentiment analysis will
+  give us an understanding of how positively and negatively different musicians
+  and songs are received, and understand what types of popularity different
+  artists attain.
+</p>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<body>
+<script>
+
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 100, left: 100},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom;
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("/cs1951a-project/visualization/occurrences-total.json", function(d) {
+  console.log(d);
+  data = Object.keys(d)
+    .map(function(key) { return [key, d[key]]; })
+    .sort(function(a, b) { return b[1] - a[1]; })
+    .slice(0, 15)
+  console.log(data);
+  x.domain(data.map(function(d) { return d[0]; }));
+  y.domain([0, d3.max(data, function(d) { return d[1]; })]);
+
+  g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+
+  g.append("text")
+    .attr("x", 400)
+    .attr("y", height + 40)
+    .text("Artist")
+
+  g.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y).ticks(10));
+  
+  g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -150)
+      .attr("y", -60)
+      .attr("dy", "0.71em")
+      .attr("text-anchor", "middle")
+      .text("Frequency");
+
+  g.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d[0]); })
+      .attr("y", function(d) { return y(d[1]); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d[1]); });
+});
+</script>
+</body>

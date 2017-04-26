@@ -45,6 +45,5 @@ of how well future albums sell and are received than chart ratings. For example,
 Kanye West has been mentioned 13 times this year, mostly in posts about his
 health and interviews.
 
-
 In our next updates we will see how well machine learning and statistics back up
 our conclusion.
