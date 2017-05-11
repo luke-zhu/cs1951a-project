@@ -30,7 +30,10 @@ We then gathered samples of other data and looked at descriptive statistics like
 
 The visualization also supported our initial exploration and we continued by doing machine learning analysis on this set of relations.
 
+<span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 339.93px; height: 176.50px;"><img alt="" src="/cs1951a-project/images/image2.png" style="width: 339.93px; height: 176.50px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 340.00px; height: 175.99px;"><img alt="" src="/cs1951a-project/images/image5.png" style="width: 340.00px; height: 175.99px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span>
+
 From our data exploration we proceeded to create linear regression relating mentions of artists in r/hiphopheads posts, Metacritic scores, and Billboard chart history. We eventually expanded our model to include RapGenius occurrence data and variations of Billboard charts. We found that a linear model with the below details had a r2 value of 0.586:
+
 Predictors (artists):
 artist average metacritic score
     # of weeks on Billboard’s Top Hip Hop and R&B Albums chart
@@ -40,6 +43,10 @@ Dependent variable:
 r/hiphopheads had less of a relationship to the Billboard charts (r2 values less than 0.43) and using our social media data to predict billboard chart rankings resulted in weaker models as well.
 In addition to linear regression regarding artist popularity, we also did sentiment analysis on the comments in Reddit posts and compared them to the Metacritic averages of the artists mentioned in those posts. Using the TextBlob API, we used their model with pretrained sentiment polarity values for words and used the predicted sentiment values of each comment to estimate the overall sentiment of the community to different hip hop artists. 
 
-However, as it turned out, the sentiment of discussions about artists are not correlated to the popularity nor the rating of the artist. One aspect of this refers back to the specific slang and jargon that is used on r/hiphopheads.  Aggregating these slang words and adjusting their sentiment scores could garner better results. This would be something to potentially improve if more research were to be done. 
+However, as it turned out, the sentiment of discussions about artists are not correlated to the popularity nor the rating of the artist. One aspect of this refers back to the specific slang and jargon that is used on r/hiphopheads.
+
+<img alt="" src="/cs1951a-project/images/image4.png" style="width: 592.50px; height: 293.16px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="">
+
+Aggregating these slang words and adjusting their sentiment scores could garner better results. This would be something to potentially improve if more research were to be done. 
 
 The other underlying problem with the sentiments is that r/hiphopheads tends to be a place where users post about music that they like. There are few posts that express distaste about particular artists and their songs. The culture of the subreddit tends to be more about putting the spotlight and good music. So if more research were to be done it may be more meaningful to find sentiments about comments on a forum that is based more on giving critical reviews on artists.
