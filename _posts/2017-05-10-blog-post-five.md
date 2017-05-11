@@ -10,9 +10,15 @@ With the size and scope of our project, we wanted to try and focus on a particul
 The datasets were collected from various sources including the US Billboard Top 100 charts, Metacritic, Spotify information about artists and songs via Spotify API pulls, and text data from social media sites like Reddit and Rap Genius. For the majority of our data sources, we used a web scraper called Scrapy to collect information that was not really made available through regular API. 
 
     
-    {"url": "https://www.reddit.com/r/hiphopheads/comments/62hhm2/fresh_kendrick_lamar_humble_single/", "polarity_mean": 0.09551545536375143, "polarity_std": 0.2607894828412269},
-    {"url": "https://www.reddit.com/r/hiphopheads/comments/5xvl9s/chance_the_rapper_has_just_donated_1000000_to/", "polarity_mean": 0.12773875989161007, "polarity_std": 0.2815185198246458},
-    {"url": "https://www.reddit.com/r/hiphopheads/comments/3x3j31/chance_the_rapper_announces_his_warmest_winter/", "polarity_mean": 0.08483745021527826, "polarity_std": 0.2788481117219995},
+    {"url": "https://www.reddit.com/r/hiphopheads/comments/62hhm2/fresh_kendrick_lamar_humble_single/",
+    "polarity_mean": 0.09551545536375143,
+    "polarity_std": 0.2607894828412269},
+    {"url": "https://www.reddit.com/r/hiphopheads/comments/5xvl9s/chance_the_rapper_has_just_donated_1000000_to/",
+    "polarity_mean": 0.12773875989161007,
+    "polarity_std": 0.2815185198246458},
+    {"url": "https://www.reddit.com/r/hiphopheads/comments/3x3j31/chance_the_rapper_announces_his_warmest_winter/",
+    "polarity_mean": 0.08483745021527826,
+    "polarity_std": 0.2788481117219995},
 
 When trying to pull data for particular artists, we ran into the issue of ambiguity with names. For instance, “Beyonce” and “Beyoncé” would be categorized as two different artists if we didn’t account for both versions. In order to solve this, we made use of the Spotify API, which already had this sort of check built in. The way we implement it was that we would make requests using any of the ambiguous names that we came across and standardized the logical meaning behind each version of the name to the first result that Spotify gave for it. This made the aggregation process much easier and fully incorporated all of the different data points without any significant loss in data.
 
